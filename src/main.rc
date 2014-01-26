@@ -1,3 +1,30 @@
+extern mod std;
+extern mod extra;
+
+use std::io::{File, io_error, Open, ReadWrite};
+
 fn main() {
-    println!("test");
+    let p = Path::new("/home/toon/project/arkoh-practice/src/test/test.svg");
+
+    let mut file = match File::open_mode(&p, Open, ReadWrite) {
+        Some(s) => s,
+        None => fail!("whoops! I'm sure this raised, anyways..")
+    };
+
+    let mut doc = file.read_to_str();
+    let mut iter = doc.chars();
+
+    let mut temp = ~"";
+    let mut flag = 0;
+
+    for c in iter {
+        if(c == ' ' && flag == 0) {
+            println!("c = {:?}", temp);
+            temp = ~"";
+            flag = 1;
+        } else {
+            flag = 0;
+            temp.push_char(c);
+        }
+    }
 }
